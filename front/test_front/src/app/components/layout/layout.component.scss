@@ -1,0 +1,7 @@
+.main-content {
+  margin-left: 250px; // Même valeur que la largeur de la sidebar
+  width: calc(100% - 250px); // Calcule la largeur restante
+  padding: 20px;
+  min-height: 100vh;
+  box-sizing: border-box; // Inclut le padding dans le calcul de la largeur
+}

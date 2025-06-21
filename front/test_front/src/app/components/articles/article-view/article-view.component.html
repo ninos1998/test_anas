@@ -1,0 +1,38 @@
+<div class="article-container">
+  <article class="article">
+    <!-- Titre de l'article -->
+    <h1 class="article-title">{{ article?.title }}</h1>
+
+    <!-- Conteneur de l'image avec fallback -->
+    <div class="article-image-container">
+      <img
+        class="article-image"
+        [src]="imageSrc"
+        alt="Image illustrant l'article: {{ article?.title }}"
+        (error)="handleImageError()"
+      />
+      @if (imageError) {
+      <div class="image-placeholder">
+        <i class="fas fa-image"></i>
+        <span>Image non disponible</span>
+      </div>
+      }
+    </div>
+
+    <!-- Contenu de l'article -->
+    <div class="article-content">
+      <p>{{ article?.content }}</p>
+    </div>
+
+    <!-- Métadonnées optionnelles -->
+    @if (article?.author || article?.date) {
+    <div class="article-meta">
+      @if (article?.author) {
+      <span class="author">Par {{ article?.author }}</span>
+      } @if (article?.date) {
+      <span class="date">Publié le {{ article?.date }}</span>
+      }
+    </div>
+    }
+  </article>
+</div>

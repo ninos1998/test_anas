@@ -1,0 +1,67 @@
+<div class="article-list">
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+    <!-- <mat-spinner></mat-spinner> -->
+  </div>
+
+  <div *ngIf="!isLoading && articles.length === 0" class="no-articles">
+    <p>Aucun article trouvé</p>
+  </div>
+
+  <div *ngFor="let article of articles" class="article-card">
+    <div class="article-header">
+      <div class="article-actions" *ngIf="canEditArticle(article)">
+        <button (click)="editArticle(article._id)" class="edit-button">
+          <i class="fas fa-edit"></i> Edit
+        </button>
+        <button (click)="deleteArticle(article._id)" class="delete-button">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </div>
+      
+      <div routerLink="article-header">
+        <h2>{{ article.title }}</h2>
+        <div class="article-meta">
+          <span class="author" *ngIf="article.author">
+            <!-- Par {{ article.author.username }} -->
+          </span>
+          <span class="date">
+            {{ article.createdAt | date : "mediumDate" }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="article-image" *ngIf="article.image">
+      <img [src]="getImageUrl(article.image)" [alt]="article.title" />
+    </div> -->
+
+    <div class="article-content">
+      <p>{{ article.content }}</p>
+    </div>
+
+    <div class="article-footer">
+      <div class="tags" *ngIf="article.tags.length > 0">
+        <span class="tag" *ngFor="let tag of article.tags">{{ tag }}</span>
+      </div>
+      <a (click)="navigateToArticle(article._id)" class="read-more">
+        See more
+      </a>
+    </div>
+  </div>
+  <div class="pagination" *ngIf="totalItems > itemsPerPage">
+    <button
+      *ngFor="let page of getPageNumbers()"
+      (click)="onPageChange(page)"
+      [class.active]="page === currentPage"
+    >
+      {{ page }}
+    </button>
+  </div>
+  <!-- <mat-paginator [length]="totalItems"
+                 [pageSize]="itemsPerPage"
+                 [pageIndex]="currentPage - 1"
+                 (page)="onPageChange($event.pageIndex + 1)"
+                 *ngIf="totalItems > itemsPerPage">
+  </mat-paginator> -->
+</div>

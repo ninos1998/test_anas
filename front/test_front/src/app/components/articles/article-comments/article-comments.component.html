@@ -1,0 +1,36 @@
+<!-- src/app/components/article-comments/article-comments.component.html -->
+<div class="comments-section">
+  <h3>Commentaires</h3>
+  
+  <!-- Formulaire de commentaire principal -->
+  <div class="comment-form">
+    <textarea [(ngModel)]="newCommentContent" placeholder="Ajouter un commentaire..."></textarea>
+    <button (click)="addComment()" [disabled]="!newCommentContent.trim()">
+      {{ replyingTo ? 'Répondre' : 'Commenter' }}
+    </button>
+    <button *ngIf="replyingTo" (click)="cancelReply()" class="cancel-btn">Annuler</button>
+  </div>
+
+  <!-- Liste des commentaires -->
+  <div class="comments-list">
+    <div *ngFor="let comment of comments" class="comment">
+      <div class="comment-header">
+        <img [src]="comment.author.avatar" alt="Avatar" class="avatar">
+        <span class="username">{{ comment.author.username }}</span>
+      </div>
+      <div class="comment-content">{{ comment.content }}</div>
+      <button (click)="startReply(comment._id)" class="reply-btn">Répondre</button>
+
+      <!-- Réponses aux commentaires -->
+      <div *ngIf="comment.replies?.length" class="replies">
+        <div *ngFor="let reply of comment.replies" class="reply">
+          <div class="comment-header">
+            <img [src]="reply.author.avatar" alt="Avatar" class="avatar">
+            <span class="username">{{ reply.author.username }}</span>
+          </div>
+          <div class="comment-content">{{ reply.content }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

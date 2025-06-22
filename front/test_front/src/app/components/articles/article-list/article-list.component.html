@@ -7,6 +7,9 @@
   <div *ngIf="!isLoading && articles.length === 0" class="no-articles">
     <p>Aucun article trouvé</p>
   </div>
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
 
   <div *ngFor="let article of articles" class="article-card">
     <div class="article-header">
@@ -18,7 +21,7 @@
           <i class="fas fa-trash"></i> Delete
         </button>
       </div>
-      
+
       <div routerLink="article-header">
         <h2>{{ article.title }}</h2>
         <div class="article-meta">
@@ -40,14 +43,73 @@
       <p>{{ article.content }}</p>
     </div>
 
+   
     <div class="article-footer">
       <div class="tags" *ngIf="article.tags.length > 0">
         <span class="tag" *ngFor="let tag of article.tags">{{ tag }}</span>
       </div>
-      <a (click)="navigateToArticle(article._id)" class="read-more">
-        See more
-      </a>
+      <div class="footer-actions">
+        <a (click)="navigateToArticle(article._id)" class="read-more">
+          See more
+        </a>
+        <button (click)="toggleComments(article._id)" class="comment-toggle">
+          {{
+            showComments[article._id] ? "Hide Comments" : "Show Comments"
+          }}
+        </button>
+      </div>
     </div>
+
+    <!-- Section des commentaires -->
+    <div *ngIf="showComments[article._id]" class="comments-section">
+      <div *ngIf="authService.isAuthenticated" class="comment-form">
+        <textarea
+          [(ngModel)]="newCommentText[article._id]"
+          placeholder="Write your comment..."
+        ></textarea>
+        <button (click)="postComment(article._id)">Post Comment</button>
+      </div>
+
+      <div *ngIf="!articleComments[article._id]" class="loading-comments">
+        Loading comments...
+      </div>
+
+      <div
+        *ngIf="articleComments[article._id]?.length === 0"
+        class="no-comments"
+      >
+        No comments yet. Be the first to comment!
+      </div>
+
+      <div
+        class="comments-list"
+        *ngIf="articleComments[article._id]?.length > 0"
+      >
+        <div
+          *ngFor="let comment of articleComments[article._id]"
+          class="comment"
+        >
+          <div class="comment-header">
+            <img [src]="comment.author.avatar" class="avatar" />
+            <span class="username">{{ comment.author.username }}</span>
+            <span class="date">{{ comment.createdAt | date : "medium" }}</span>
+          </div>
+          <div class="comment-content">{{ comment.content }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="article-comments-section" *ngIf="showComments[article._id]">
+      <app-article-comments [articleId]="article._id"> </app-article-comments>
+    </div>
+
+    <button class="toggle-comments-btn" (click)="toggleComments(article._id)">
+      {{
+        showComments[article._id]
+          ? "Masquer les commentaires"
+          : "Afficher les commentaires"
+      }}
+    </button> -->
   </div>
   <div class="pagination" *ngIf="totalItems > itemsPerPage">
     <button

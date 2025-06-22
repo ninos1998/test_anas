@@ -1,4 +1,3 @@
-// article-form.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,7 +17,8 @@ export class ArticleFormComponent implements OnInit {
   successMessage = '';
   imagePreview: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
-  existingImageId: string | null = null;
+  existingImageUrl: string | null = null;
+  articleId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -39,48 +39,51 @@ export class ArticleFormComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.isEditMode = true;
-        this.loadArticle(params['id']);
+        this.articleId = params['id'];
+        this.loadArticle(this.articleId);
       }
     });
   }
 
-  loadArticle(id: string): void {
-    this.isLoading = true;
-    this.articleService.getArticle(id).subscribe({
-      next: (article) => {
-        this.patchFormValues(article);
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.errorMessage = err.error?.message || 'Failed to load article';
-        this.isLoading = false;
-      }
-    });
-  }
-
- patchFormValues(article: any): void {
-  this.articleForm.patchValue({
-    title: article.title,
-    content: article.content,
-    tags: article.tags?.join(', ') || ''
+loadArticle(id: string): void {
+  this.isLoading = true;
+  this.articleService.getArticle(id).subscribe({
+    next: (article) => {
+      console.log('Article loaded:', article); 
+      this.patchFormValues(article.data);
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error('Error loading article:', err); 
+      this.errorMessage = err.error?.message || 'Failed to load article';
+      this.isLoading = false;
+    }
   });
-
-  if (article.image) {
-    this.existingImageId = article.image;
-  }
 }
+
+  patchFormValues(article: any): void {
+    this.articleForm.patchValue({
+      title: article.title,
+      content: article.content,
+      tags: article.tags?.join(', ') || ''
+    });
+
+    if (article.image) {
+      this.existingImageUrl = article.imageUrl || `/api/images/${article.image}`;
+    }
+  }
 
   onTagsBlur(event: Event): void {
     const input = event.target as HTMLInputElement;
     const tagsArray = input.value.split(',').map(tag => tag.trim()).filter(tag => tag);
-    this.articleForm.patchValue({ tags: tagsArray });
+    this.articleForm.patchValue({ tags: tagsArray.join(', ') });
   }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
-      this.existingImageId = null; // Clear existing image ID when new file is selected
+      this.existingImageUrl = null; // Clear existing image when new file is selected
       
       const reader = new FileReader();
       reader.onload = () => {
@@ -93,51 +96,53 @@ export class ArticleFormComponent implements OnInit {
   removeImage(): void {
     this.selectedFile = null;
     this.imagePreview = null;
-    this.existingImageId = null;
+    this.existingImageUrl = null;
     this.articleForm.patchValue({ image: null });
   }
 
-onSubmit(): void {
-  if (this.articleForm.invalid) {
-    this.markFormGroupTouched(this.articleForm);
-    return;
-  }
+  onSubmit(): void {
+    if (this.articleForm.invalid) {
+      this.markFormGroupTouched(this.articleForm);
+      return;
+    }
 
-  this.isLoading = true;
-  this.errorMessage = '';
+    this.isLoading = true;
+    this.errorMessage = '';
 
-  const formData = new FormData();
-  formData.append('title', this.articleForm.value.title);
-  formData.append('content', this.articleForm.value.content);
-  
-  // Process tags
-  const tagsValue = this.articleForm.value.tags;
-  const tagsArray = (typeof tagsValue === 'string' ? 
-                    tagsValue.split(',') : 
-                    Array.isArray(tagsValue) ? tagsValue : [])
-    .map((tag: string) => tag.trim())
-    .filter((tag: string) => tag);
+    const formData = new FormData();
+    formData.append('title', this.articleForm.value.title);
+    formData.append('content', this.articleForm.value.content);
     
-  tagsArray.forEach(tag => formData.append('tags[]', tag));
+    // Process tags
+    const tagsValue = this.articleForm.value.tags;
+    const tagsArray = (typeof tagsValue === 'string' ? 
+                      tagsValue.split(',') : 
+                      Array.isArray(tagsValue) ? tagsValue : [])
+      .map((tag: string) => tag.trim())
+      .filter((tag: string) => tag);
+      
+    tagsArray.forEach(tag => formData.append('tags[]', tag));
 
-  if (this.selectedFile) {
-    formData.append('image', this.selectedFile);
-  }
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    } else if (this.existingImageUrl === null && this.isEditMode) {
+      // If in edit mode and image was removed
+      formData.append('removeImage', 'true');
+    }
 
-  // The author will be added by the article service
-  if (this.isEditMode) {
-    this.updateArticle(formData);
-  } else {
-    this.createArticle(formData);
+    if (this.isEditMode && this.articleId) {
+      this.updateArticle(formData);
+    } else {
+      this.createArticle(formData);
+    }
   }
-}
 
   createArticle(formData: FormData): void {
     this.articleService.createArticle(formData).subscribe({
       next: (article) => {
         this.successMessage = 'Article created successfully!';
         setTimeout(() => {
-          this.router.navigate(['/articles', article._id]);
+          this.router.navigate(['/home/get/articles']);
         }, 1500);
       },
       error: (err) => {
@@ -147,14 +152,13 @@ onSubmit(): void {
   }
 
   updateArticle(formData: FormData): void {
-    const articleId = this.route.snapshot.params['id'];
-    if (!articleId) return;
+    if (!this.articleId) return;
 
-    this.articleService.updateArticle(articleId, formData).subscribe({
+    this.articleService.updateArticle(this.articleId, formData).subscribe({
       next: (article) => {
         this.successMessage = 'Article updated successfully!';
         setTimeout(() => {
-          this.router.navigate(['/articles', article._id]);
+          this.router.navigate(['/home/get/articles']);
         }, 1500);
       },
       error: (err) => {
@@ -162,6 +166,8 @@ onSubmit(): void {
       }
     });
   }
+
+
 
   handleError(err: any): void {
     console.error('Error:', err);
@@ -177,47 +183,8 @@ onSubmit(): void {
       }
     });
   }
-  contentValue: string = '';
-
-onContentChange(event: Event) {
-  const element = event.target as HTMLElement;
-  this.articleForm.get('content').setValue(element.innerHTML);
-  // Ou si vous utilisez Reactive Forms:
-  // this.form.patchValue({ content: element.innerHTML });
-}
 
   get title() { return this.articleForm.get('title'); }
   get content() { return this.articleForm.get('content'); }
   get tags() { return this.articleForm.get('tags'); }
-  htmlContent = '';
-editorConfig = {
-  editable: true,
-  spellcheck: true,
-  height: 'auto',
-  minHeight: '0',
-  maxHeight: 'auto',
-  width: 'auto',
-  minWidth: '0',
-  translate: 'yes',
-  enableToolbar: true,
-  showToolbar: true,
-  placeholder: 'Enter text here...',
-  defaultParagraphSeparator: '',
-  defaultFontName: '',
-  defaultFontSize: '',
-  fonts: [
-    {class: 'arial', name: 'Arial'},
-    {class: 'times-new-roman', name: 'Times New Roman'},
-    {class: 'calibri', name: 'Calibri'},
-    {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-  ],
-  uploadUrl: 'v1/image',
-  uploadWithCredentials: false,
-  sanitize: true,
-  toolbarPosition: 'top',
-  toolbarHiddenButtons: [
-    ['bold', 'italic'],
-    ['fontSize']
-  ]
-};
 }

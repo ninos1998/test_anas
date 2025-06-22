@@ -1,0 +1,38 @@
+<!-- dashboard.component.html -->
+<div class="dashboard-container">
+  <h2>Article Analytics Dashboard</h2>
+  
+  <div class="time-range-selector">
+    <button (click)="updateTimeRange(7)">Last 7 Days</button>
+    <button (click)="updateTimeRange(30)">Last 30 Days</button>
+    <button (click)="updateTimeRange(90)">Last 90 Days</button>
+  </div>
+  
+  <div class="chart-container">
+    <canvas id="trendsChart"></canvas>
+  </div>
+  
+  <div class="top-articles">
+    <h3>Top Performing Articles</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Views</th>
+          <th>Likes</th>
+          <th>Engagement Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let article of topArticles">
+          <td>{{ article.title }}</td>
+          <td>{{ article.author.username }}</td>
+          <td>{{ article.views }}</td>
+          <td>{{ article.likes }}</td>
+          <td>{{ (article.likes / (article.views || 1) * 100).toFixed(1) }}%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

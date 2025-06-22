@@ -1,0 +1,63 @@
+.comments-section {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.comment-form {
+  margin-bottom: 2rem;
+}
+
+.comment-form textarea {
+  width: 100%;
+  min-height: 80px;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+}
+
+.comment {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.replies {
+  margin-left: 2rem;
+  margin-top: 1rem;
+  border-left: 2px solid #ddd;
+  padding-left: 1rem;
+}
+
+.reply {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+.reply-btn, .cancel-btn {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+}
+
+.reply-btn:hover, .cancel-btn:hover {
+  text-decoration: underline;
+}

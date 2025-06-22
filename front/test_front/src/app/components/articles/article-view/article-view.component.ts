@@ -21,6 +21,19 @@ export class ArticleViewComponent  implements OnInit, OnDestroy {
         private route: ActivatedRoute,
     private articleService: ArticleService) {}
   imageSrc: string = '';
+ngzOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.articleService.getArticle(id).subscribe({
+        next: (response) => {
+          this.article = response.data;
+          // Track view
+          this.articleService.trackView(id).subscribe();
+        },
+        error: (err) => console.error(err)
+      });
+    }
+  }
 
 ngOnInit(): void {
   const articleId = this.route.snapshot.paramMap.get('id');
@@ -35,9 +48,11 @@ getArticle(id: string | null): void {
 this.articleService.getArticle(id).subscribe(response => {
   this.article = response.data;
   console.log('articcccccccccccccle:', this.article);
+this.articleService.trackView(id).subscribe();
 
   if (this.article.image) {
-    console.log('ImageID:', this.article.image); // ✅ Maintenant ça fonctionne
+    console.log('ImageID:', this.article.image); 
+    
     this.articleService.getImage(this.article.image).subscribe({
       next: (imageUrl: string) => {
         this.imageSrc = imageUrl;

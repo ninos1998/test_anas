@@ -11,12 +11,7 @@
         alt="Image illustrant l'article: {{ article?.title }}"
         (error)="handleImageError()"
       />
-      @if (imageError) {
-      <div class="image-placeholder">
-        <i class="fas fa-image"></i>
-        <span>Image non disponible</span>
-      </div>
-      }
+      
     </div>
 
     <!-- Contenu de l'article -->

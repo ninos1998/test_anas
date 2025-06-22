@@ -1,0 +1,13 @@
+# === Dependencies ===
+# Exclure les node_modules du backend et du frontend
+backend/node_modules/
+front/test_front/node_modules/
+
+
+# Dossiers de build et dépendances
+dist/
+build/
+.out/
+.next/
+node_modules/ 
+

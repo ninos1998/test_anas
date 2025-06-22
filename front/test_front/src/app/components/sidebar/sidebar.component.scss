@@ -46,3 +46,28 @@
     }
   }
 }
+.logout-item {
+  margin-top: auto; /* Pousse le bouton vers le bas */
+  border-top: 1px solid #e0e0e0; /* Séparation visuelle */
+  padding-top: 10px;
+}
+
+.logout-link {
+  color: #d32f2f !important; /* Couleur rouge pour indiquer une action critique */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-link:hover {
+  background-color: #ffebee !important; /* Fond légèrement rouge au survol */
+  color: #b71c1c !important;
+}
+
+.logout-link i {
+  margin-right: 8px;
+}
+
+/* Style pour les liens actifs (si vous voulez une apparence différente pour le logout) */
+.logout-link.active {
+  background-color: transparent !important;
+}

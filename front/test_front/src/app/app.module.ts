@@ -12,6 +12,9 @@ import { ArticleFormComponent } from './components/articles/article-form/article
 import { ArticleListComponent } from './components/articles/article-list/article-list.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { LayoutComponent } from './components/layout/layout.component';
+import { ListUserComponent } from './components/users/list-user/list-user.component';
+import { ArticleCommentsComponent } from './components/articles/article-comments/article-comments.component';
+import { SocketIoModule } from 'ngx-socket-io';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,9 @@ import { LayoutComponent } from './components/layout/layout.component';
     ArticleFormComponent,
     ArticleListComponent,
     SidebarComponent,
-    LayoutComponent
+    LayoutComponent,
+    ListUserComponent,
+    ArticleCommentsComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +35,14 @@ import { LayoutComponent } from './components/layout/layout.component';
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+     SocketIoModule.forRoot({
+      url: 'http://localhost:5000', 
+      options: {
+        transports: ['websocket'],
+        withCredentials: true
+      }
+    })
+  
 
   ],
   providers: [],

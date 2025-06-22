@@ -78,10 +78,10 @@
     <div class="form-group">
       <label for="image">Featured Image</label>
       
-      @if (imagePreview || existingImageId) {
+      @if (imagePreview || existingImageUrl) {
         <div class="mb-3">
           <img 
-            [src]="imagePreview || '/api/images/' + existingImageId" 
+            [src]="imagePreview || existingImageUrl" 
             alt="Article preview" 
             class="img-thumbnail article-image-preview"
           >
@@ -123,15 +123,7 @@
         }
         {{ isEditMode ? "Update Article" : "Publish Article" }}
       </button>
-      <!-- @if (false) {
-        <button
-          type="button"
-          class="btn btn-outline-secondary btn-lg ml-2"
-          (click)="router.navigate(['/articles'])"
-        >
-          Cancel
-        </button>
-      } -->
+     
     </div>
   </form>
 </div>

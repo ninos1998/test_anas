@@ -1,0 +1,530 @@
+{
+	"info": {
+		"_postman_id": "671bf39f-eb89-4cf3-820d-e860a651bef3",
+		"name": "test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32588046"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"anas writer\",\r\n  \"email\": \"anas.writer@gmail.com\",\r\n  \"password\": \"1234\",\r\n  \"role\": \"writer\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"anas.admin@gmail.com\",\r\n  \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTY4MGU2MmJkNmU3OGY2OTJiNzE2OCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUwNDk5NzUwLCJleHAiOjE3NTMwOTE3NTB9.U4oZcxxGfMOr5GKuyToKZiRsq4C4mP3pu7dbl1PNqNs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer z.eyJpZCI6IjY4NTY5ODExNjBkOWViOTgzOTdiYTAwMSIsInJvbGUiOiJlZGl0b3IiLCJpYXQiOjE3NTA1OTMzNDAsImV4cCI6MTc1MzE4NTM0MH0._MFEVGKiFmKqZXFFyVuMhu17Ex74gbHbNDcbZjKqEG",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "role",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTdmZGJhZmUzYjg5YjdhNmI3NjY3YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MDYwNDYzNywiZXhwIjoxNzUzMTk2NjM3fQ.pNy93j-nSvgrZPwPYvsHfSiyr_7ARFGC8AsfOFtGFgE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"role\":\"writer\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users/1234567890/role",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"1234567890",
+								"role"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "article",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTY5N2JjNGViYzllZDJmNjQ5MWE5NyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MDUxMzUwNSwiZXhwIjoxNzUzMTA1NTA1fQ.N93GJSFx75Pw2wnqaUOiciCxG78sZufDM_x234hNYqM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "author",
+									"value": "685697bc4ebc9ed2f6491a97",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "postman-cloud:///1f04ea59-8c40-4940-988f-76a0b510a46b"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/articles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"articles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTY4MGU2MmJkNmU3OGY2OTJiNzE2OCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUwNTAwMDYyLCJleHAiOjE3NTMwOTIwNjJ9.lsHkulkponqbM9HABWA3fu9NAQd5-_TAqnGgs-5zOsw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/articles/6856b772b84962ba503b2886/image",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"articles",
+								"6856b772b84962ba503b2886",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTY4MGU2MmJkNmU3OGY2OTJiNzE2OCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUwNTAwMDYyLCJleHAiOjE3NTMwOTIwNjJ9.lsHkulkponqbM9HABWA3fu9NAQd5-_TAqnGgs-5zOsw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/articles/6856b772b84962ba503b2886/image",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"articles",
+								"6856b772b84962ba503b2886",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTY4MGU2MmJkNmU3OGY2OTJiNzE2OCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUwNTAwMDYyLCJleHAiOjE3NTMwOTIwNjJ9.lsHkulkponqbM9HABWA3fu9NAQd5-_TAqnGgs-5zOsw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/articles/6856b772b84962ba503b2886/image",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"articles",
+								"6856b772b84962ba503b2886",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get image",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTY4MGU2MmJkNmU3OGY2OTJiNzE2OCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUwNTAwMDYyLCJleHAiOjE3NTMwOTIwNjJ9.lsHkulkponqbM9HABWA3fu9NAQd5-_TAqnGgs-5zOsw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/articles/images/68569b0ee6f7db572c597e21",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"articles",
+								"images",
+								"68569b0ee6f7db572c597e21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload image",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTY5N2JjNGViYzllZDJmNjQ5MWE5NyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MDUwNTg5MywiZXhwIjoxNzUzMDk3ODkzfQ.bq8ZhvyKmC_BxX7ZzTlKM9n57O01Xy2J0n9KCvv4KxE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "postman-cloud:///1f04e95a-7981-4160-9012-86cdd89ca445"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/articles/685694bda07b663005123825/image",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"articles",
+								"685694bda07b663005123825",
+								"image"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ch",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "comments",
+			"item": [
+				{
+					"name": "get comments",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "create comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTdmZGJhZmUzYjg5YjdhNmI3NjY3YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MDYxNjQ5OSwiZXhwIjoxNzUzMjA4NDk5fQ.5EI7ik5GXivPYTJ0qB-qNePDCLRuwY-3Ji16JNCUpgw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\":\"test postman\",\r\n    \"article\":\"68580c72e238a4858ff4a156\",\r\n    \"author\":\"6857fdbafe3b89b7a6b7667c\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/comments/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"comments",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

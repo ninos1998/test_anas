@@ -53,3 +53,54 @@ exports.deleteUser = async (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 };
+exports.updateUserRole = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    // Validation
+    if (!role) {
+      return res.status(400).json({
+        success: false,
+        message: 'Veuillez fournir un rôle'
+      });
+    }
+
+    // Trouver l'utilisateur
+    const user = await User.findById(id);
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'Utilisateur non trouvé'
+      });
+    }
+
+    // Empêcher un admin de modifier son propre rôle
+    if (user._id.toString() === req.user._id.toString()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Vous ne pouvez pas modifier votre propre rôle'
+      });
+    }
+
+    // Mettre à jour le rôle
+    user.role = role;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+
+  } catch (error) {
+    console.error('Error updating user role:', error);
+    next(error);
+  }
+};
+

@@ -5,10 +5,16 @@ import { environment } from '../../environments/environment';
 import { Article } from '../models/article.model';
 import { AuthService } from './auth.service';
 import { PaginatedResponse } from '../models/PaginatedResponse';
-
+interface TrendData {
+  _id: string;
+  totalViews: number;
+  totalLikes: number;
+  articleCount: number;
+}
 @Injectable({
   providedIn: 'root'
 })
+
 export class ArticleService {
   private apiUrl = `${environment.apiUrl}/articles`;
 
@@ -92,14 +98,63 @@ getImage(imageId: string): Observable<string> {
     );
   }
 
-  // Helper method to get authorization header
   private getAuthHeader(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('jwt_token');
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 getArticleImage(imageId: string) {
     return this.http.get(`http://localhost:5000/api/articles/images/${imageId}`, {
       responseType: 'text' 
     });
-  }s
+  }
+    likeArticle(id: string): Observable<{success: boolean, data: {likes: number, isLiked: boolean}}> {
+        const token = localStorage.getItem('jwt_token');
+
+      return this.http.post<{success: boolean, data: {likes: number, isLiked: boolean}}>(
+      `${this.apiUrl}/${id}/like`,
+      {},
+      { headers:{
+          'Authorization': `Bearer ${token}`,
+        } }
+    );
+  }
+
+  trackView(id: string): Observable<{success: boolean}> {
+    return this.http.post<{success: boolean}>(
+      `${this.apiUrl}/${id}/view`,
+      {}
+    );
+  }
+
+  // Admin analytics methods
+getTopArticles(limit: number = 5, timeRange: string = 'all'): Observable<{success: boolean, data: Article[]}> {
+    const token = localStorage.getItem('jwt_token');
+    return this.http.get<{success: boolean, data: Article[]}>(
+      `${this.apiUrl}/analytics/top-articles`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        params: { 
+          limit: limit.toString(), 
+          timeRange 
+        }
+      }
+    );
+  }
+
+  getTrends(days: number = 30): Observable<{success: boolean, data: TrendData[]}> {
+       const token = localStorage.getItem('jwt_token');
+
+    return this.http.get<{success: boolean, data: TrendData[]}>(
+      `${this.apiUrl}/analytics/trends`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        params: { days: days.toString() }
+      }
+    );
+  }
+
 }

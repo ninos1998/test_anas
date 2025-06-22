@@ -62,7 +62,8 @@ async register(userData: {
           user: response.user 
         };
         localStorage.setItem('currentUser', JSON.stringify(userData));
-        
+        localStorage.setItem('jwt_token', userData.token);
+
         // Mise à jour du BehaviorSubject
         this.currentUserSubject.next(userData);
         

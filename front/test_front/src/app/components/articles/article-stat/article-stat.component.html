@@ -1,0 +1,9 @@
+<p>article-stat works!</p>
+<div class="stats">
+  <span class="views">
+    <i class="fas fa-eye"></i> {{ article.views || 0 }}
+  </span>
+  <button (click)="likeArticle()" [class.liked]="isLiked">
+    <i class="fas fa-heart"></i> {{ article.likes || 0 }}
+  </button>
+</div>

@@ -7,21 +7,25 @@ const {
   updateArticle,
   deleteArticle,
   uploadImage,
-  getImage
+  getImage,
+  likeArticle,
+  getTopArticles,
+  getTrends,
+  trackView
 } = require('../controllers/articleController'); // Vérifiez ce chemin
-const { protect } = require('../middlewares/authMiddleware');
+const { protect,authorize } = require('../middlewares/authMiddleware');
 const { checkArticlePermissions } = require('../middlewares/articlePermissions');
 const upload = require('../middlewares/imageUpload');
 
-// Routes de base
+
 router.route('/')
   .get(getArticles)
-  .post(protect, createArticle);
+  .post(protect, authorize('writer', 'editor', 'admin'), createArticle);
 
 router.route('/:id')
   .get(getArticle)
   .put(protect, checkArticlePermissions('update'), updateArticle)
-  .delete(protect, checkArticlePermissions('delete'), deleteArticle);
+  .delete(protect, authorize('admin'), deleteArticle); 
 
 router.route('/:id/image')
   .post(
@@ -30,7 +34,15 @@ router.route('/:id/image')
     upload.single('image'),
     uploadImage
   );
+
 router.route('/images/:id')
   .get(getImage);
 
+
+router.post('/:id/like', protect, likeArticle);
+
+router.post('/:id/view', trackView);
+
+router.get('/analytics/top-articles',protect, authorize('admin'), getTopArticles);
+router.get('/analytics/trends', protect, authorize('admin'), getTrends);
 module.exports = router;

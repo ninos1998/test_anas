@@ -20,3 +20,12 @@ npm start
 ### Front
 npm i ( --force si c'est necessaire )
 ng s ( sur le port 4200  - cors autorisation ) 
+
+###Users à utiliser : 
+anas.admin@gmail.com pswd:1234	role:admin
+
+anas.writer@gmail.com pswd:1234	role:writer
+
+anas editor	anas.editor@gmail.com pswd:1234	role:editor
+
+anas.zitoun@gmail.com pswd:1234 role:editor
